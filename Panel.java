@@ -5,10 +5,12 @@ import java.awt.image.BufferedImage;
 public class Panel extends JPanel implements Runnable {
 
     private final Convex convex;
-    private final static int width = 400;
-    private final static int height = 400;
+    private final int WIDTH;
+    private final int HEIGHT;
 
     public Panel(int width, int height) {
+        this.WIDTH = width;
+        this.HEIGHT = height;
         convex = new Convex();
         setSize(width, height);
         setBackground(Color.BLACK);
@@ -18,7 +20,12 @@ public class Panel extends JPanel implements Runnable {
 
     @Override
     public void paintComponent(Graphics graphics) {
-        graphics.clearRect(0,0,width,height);
+        graphics.clearRect(0,0,WIDTH,HEIGHT);
+        graphics.translate(WIDTH/2, HEIGHT/2);
+        graphics.drawLine(0,0, 10000, 0);
+        graphics.drawLine(0,0, 0, 10000);
+        graphics.drawLine(0,0, -10000, 0);
+        graphics.drawLine(0,0, 0, -10000);
         convex.draw(graphics);
     }
 
