@@ -110,7 +110,7 @@ class Polygon extends ArrayDeque<R2Point> implements Figure {
     }
 
     public static void sortVerticesClockwise(ArrayList<R2Point> vertices) {
-        // Найдем центр масс многоугольника
+        // среднее арифметическое
         double centerX = 0;
         double centerY = 0;
         int n = vertices.size();
@@ -121,17 +121,14 @@ class Polygon extends ArrayDeque<R2Point> implements Figure {
         centerX /= n;
         centerY /= n;
 
-        double finalCenterY = centerY;
         double finalCenterX = centerX;
-        Comparator<R2Point> polarAngleComparator = new Comparator<R2Point>() {
-            @Override
-            public int compare(R2Point v1, R2Point v2) {
-                double angle1 = Math.atan2(v1.getY() - finalCenterY, v1.getX() - finalCenterX);
-                double angle2 = Math.atan2(v2.getY() - finalCenterY, v2.getX() - finalCenterX);
-                return Double.compare(angle1, angle2);
-            }
+        double finalCenterY = centerY;
+        Comparator<R2Point> polarAngleComparator = (v1, v2) -> {
+            // atan2 возвращает угол между осью икс и вектором из центра оси координат в точку(икс, игрик)
+            double angle1 = Math.atan2(v1.getY() - finalCenterY, v1.getX() - finalCenterX);
+            double angle2 = Math.atan2(v2.getY() - finalCenterY, v2.getX() - finalCenterX);
+            return Double.compare(angle1, angle2);
         };
-        // Отсортируем вершины по полярному углу
         vertices.sort(polarAngleComparator);
     }
 
@@ -140,12 +137,9 @@ class Polygon extends ArrayDeque<R2Point> implements Figure {
 
         for (R2Point point : points) {
             if (point.getY() == 0) {
-                // Точка уже находится на оси X
                 intersectionPoints.add(point);
             } else {
-                // Проверяем пересечение с осью X
                 if ((point.getY() > 0 && point.getPrevY(points) < 0) || (point.getY() < 0 && point.getPrevY(points) > 0)) {
-                    // Находим пересечение с осью X
                     double intersectionX = point.getX() - (point.getY() * (point.getPrevX(points) - point.getX())) / (point.getPrevY(points) - point.getY());
                     intersectionPoints.add(new R2Point(intersectionX, 0));
                 }

@@ -14,6 +14,7 @@ class R2Point {
         return x;
     }
     public double getPrevX(ArrayList<R2Point> points) {
+        // найти предыдущий элемент учитывая цикличность (как в питоне)
         int prevIndex = (points.indexOf(this) - 1 + points.size()) % points.size();
         return points.get(prevIndex).getX();
     }
