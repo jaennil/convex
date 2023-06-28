@@ -1,14 +1,14 @@
+import java.awt.*;
+
 class Convex{
     private Figure figure;
-    public R2Point lastPoint;
 
     public Convex(){
         figure = new Void();
     }
 
     public void add(R2Point point){
-        figure = figure.add(point);
-        this.lastPoint = point;
+        figure = figure.addPoint(point);
     }
 
     public double area(){
@@ -17,5 +17,9 @@ class Convex{
 
     public double perimeter(){
         return figure.perimeter();
+    }
+
+    public void draw(Graphics graphics) {
+        figure.draw(graphics);
     }
 }

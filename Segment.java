@@ -1,3 +1,5 @@
+import java.awt.*;
+
 class Segment implements Figure{
     public R2Point p, q;
 
@@ -14,7 +16,7 @@ class Segment implements Figure{
         return 0.0;
     }
 
-    public Figure add(R2Point r){
+    public Figure addPoint(R2Point r){
         if(R2Point.isTriangle(p, q, r))
             return new Polygon(p, q, r);
 
@@ -25,5 +27,10 @@ class Segment implements Figure{
             p = r;
 
         return this;
+    }
+
+    @Override
+    public void draw(Graphics graphics) {
+        graphics.drawLine((int)p.getX(), (int)p.getY(), (int)q.getX(), (int)q.getY());
     }
 }

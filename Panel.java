@@ -1,12 +1,16 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
-public class Panel extends JPanel implements Runnable{
+public class Panel extends JPanel implements Runnable {
 
     private final Convex convex;
-    public Panel() {
+    private final static int width = 400;
+    private final static int height = 400;
+
+    public Panel(int width, int height) {
         convex = new Convex();
-        setSize(400, 400);
+        setSize(width, height);
         setBackground(Color.BLACK);
         Thread thread = new Thread(this, "scanner thread");
         thread.start();
@@ -14,11 +18,8 @@ public class Panel extends JPanel implements Runnable{
 
     @Override
     public void paintComponent(Graphics graphics) {
-        Graphics2D graphics2D = (Graphics2D) graphics;
-        R2Point lastPoint = convex.lastPoint;
-        if (lastPoint == null) return;
-        graphics2D.fillOval((int) lastPoint.getX(), (int) lastPoint.getY(), 5, 5);
-        graphics.drawString(lastPoint.getX() + " " + lastPoint.getY(), (int) lastPoint.getX(), (int) lastPoint.getY());
+        graphics.clearRect(0,0,width,height);
+        convex.draw(graphics);
     }
 
     @Override

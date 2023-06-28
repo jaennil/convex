@@ -1,3 +1,5 @@
+import java.awt.*;
+
 class Point implements Figure{
     public R2Point point;
 
@@ -13,10 +15,15 @@ class Point implements Figure{
         return 0.0;
     }
 
-    public Figure add(R2Point point){
-        if(!R2Point.equal(this.point, point))
+    public Figure addPoint(R2Point point){
+        if(!point.equals(this.point))
             return new Segment(this.point, point);
         else
             return this;
+    }
+
+    @Override
+    public void draw(Graphics graphics) {
+        graphics.drawOval((int)point.getX(), (int)point.getY(), 1,1);
     }
 }

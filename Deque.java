@@ -1,16 +1,18 @@
+import java.util.Arrays;
+
 //Непрерывная реализация дека.
-class Deq{
+class Deque {
     private final static int DEFSIZE = 16;
     private R2Point[] array;
     private int size, head, tail;
 
-    public Deq(int size){
+    public Deque(int size){
         array = new R2Point[size];
         this.size = head = 0;
         tail = array.length - 1;
     }
 
-    public Deq(){
+    public Deque(){
         this(DEFSIZE);
     }
 
@@ -56,5 +58,10 @@ class Deq{
 
     public R2Point back(){
         return array[tail];
+    }
+
+    @Override
+    public String toString() {
+        return Arrays.toString(array);
     }
 }
