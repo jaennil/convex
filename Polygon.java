@@ -1,6 +1,8 @@
 import java.awt.*;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 
 class Polygon extends ArrayDeque<R2Point> implements Figure {
     private double s, p;
@@ -80,55 +82,73 @@ class Polygon extends ArrayDeque<R2Point> implements Figure {
 
     @Override
     public double upperPlaneArea() {
-        ArrayList<R2Point> points = new ArrayList<>();
+        ArrayList<R2Point> points = new ArrayList<>(this);
+        ArrayList<R2Point> intersectionPoints = findIntersectionPoints(points);
+        System.out.println(intersectionPoints);
+        ArrayList<R2Point> areaPoints = new ArrayList<>();
         for (R2Point point : this) {
-            points.add(point);
+            if (point.getY() <= 0) {
+                areaPoints.add(point);
+            }
         }
-        points.addAll(findIntersectionPoints(points));
+        areaPoints.addAll(intersectionPoints);
+        sortVerticesClockwise(areaPoints);
+        System.out.println(areaPoints);
 
         // формула гаусса
         double sum = 0;
-        for (int i = 0; i < points.size()-1; i++) {
-            sum += points.get(i).getX()*points.get(i+1).getY();
+        for (int i = 0; i < areaPoints.size() - 1; i++) {
+            sum += areaPoints.get(i).getX() * areaPoints.get(i + 1).getY();
         }
-        sum += points.get(points.size()-1).getX()*points.get(0).getY();
+        sum += areaPoints.get(areaPoints.size() - 1).getX() * areaPoints.get(0).getY();
         double difference = 0;
-        for (int i = 0; i < points.size()-1; i++) {
-            difference -= points.get(i).getY()*points.get(i+1).getX();
+        for (int i = 0; i < areaPoints.size() - 1; i++) {
+            difference += areaPoints.get(i).getY() * areaPoints.get(i + 1).getX();
         }
-        difference -= points.get(points.size()-1).getY()*points.get(0).getX();
-        return 0.5*(sum+difference);
+        difference += areaPoints.get(areaPoints.size() - 1).getY() * areaPoints.get(0).getX();
+        return Math.abs(0.5 * (sum - difference));
+    }
+
+    public static void sortVerticesClockwise(ArrayList<R2Point> vertices) {
+        // Найдем центр масс многоугольника
+        double centerX = 0;
+        double centerY = 0;
+        int n = vertices.size();
+        for (R2Point vertex : vertices) {
+            centerX += vertex.getX();
+            centerY += vertex.getY();
+        }
+        centerX /= n;
+        centerY /= n;
+
+        double finalCenterY = centerY;
+        double finalCenterX = centerX;
+        Comparator<R2Point> polarAngleComparator = new Comparator<R2Point>() {
+            @Override
+            public int compare(R2Point v1, R2Point v2) {
+                double angle1 = Math.atan2(v1.getY() - finalCenterY, v1.getX() - finalCenterX);
+                double angle2 = Math.atan2(v2.getY() - finalCenterY, v2.getX() - finalCenterX);
+                return Double.compare(angle1, angle2);
+            }
+        };
+        // Отсортируем вершины по полярному углу
+        vertices.sort(polarAngleComparator);
     }
 
     public static ArrayList<R2Point> findIntersectionPoints(ArrayList<R2Point> points) {
         ArrayList<R2Point> intersectionPoints = new ArrayList<>();
 
-        // Находим крайнюю левую и крайнюю правую точки
-        R2Point leftmost = points.get(0);
-        R2Point rightmost = points.get(0);
         for (R2Point point : points) {
-            if (point.getX() < leftmost.getX()) {
-                leftmost = point;
-            }
-            if (point.getX() > rightmost.getX()) {
-                rightmost = point;
-            }
-        }
-
-        // Находим первое пересечение с осью X
-        double intersectionX = ((0 - leftmost.getY()) * (rightmost.getX() - leftmost.getX()) / (rightmost.getY() - leftmost.getY())) + leftmost.getX();
-        intersectionPoints.add(new R2Point(intersectionX, 0));
-
-        // Ищем пересечения с осью X для соседних точек
-        for (int i = 0; i < points.size(); i++) {
-            R2Point current = points.get(i);
-            R2Point next = points.get((i + 1) % points.size()); // Циклический доступ к следующей точке
-
-            // Проверяем, что линия проходит через ось X
-            if ((current.getY() > 0 && next.getY() < 0) || (current.getY() < 0 && next.getY() > 0)) {
-                // Находим пересечение с осью X
-                double intersectionX2 = ((0 - current.getY()) * (next.getX() - current.getX()) / (next.getY() - current.getY())) + current.getX();
-                intersectionPoints.add(new R2Point(intersectionX2, 0));
+            if (point.getY() == 0) {
+                // Точка уже находится на оси X
+                intersectionPoints.add(point);
+            } else {
+                // Проверяем пересечение с осью X
+                if ((point.getY() > 0 && point.getPrevY(points) < 0) || (point.getY() < 0 && point.getPrevY(points) > 0)) {
+                    // Находим пересечение с осью X
+                    double intersectionX = point.getX() - (point.getY() * (point.getPrevX(points) - point.getX())) / (point.getPrevY(points) - point.getY());
+                    intersectionPoints.add(new R2Point(intersectionX, 0));
+                }
             }
         }
 

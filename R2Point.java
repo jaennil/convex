@@ -1,5 +1,6 @@
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 class R2Point {
@@ -11,6 +12,15 @@ class R2Point {
 
     public double getX() {
         return x;
+    }
+    public double getPrevX(ArrayList<R2Point> points) {
+        int prevIndex = (points.indexOf(this) - 1 + points.size()) % points.size();
+        return points.get(prevIndex).getX();
+    }
+
+    public double getPrevY(ArrayList<R2Point> points) {
+        int prevIndex = (points.indexOf(this) - 1 + points.size()) % points.size();
+        return points.get(prevIndex).getY();
     }
 
     public R2Point(double x, double y) {
