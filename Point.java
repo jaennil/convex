@@ -26,4 +26,9 @@ class Point implements Figure{
     public void draw(Graphics graphics) {
         graphics.drawOval((int)point.getX(), (int)point.getY(), 1,1);
     }
+
+    @Override
+    public double upperPlaneArea() {
+        return 0;
+    }
 }

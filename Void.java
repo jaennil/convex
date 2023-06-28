@@ -15,4 +15,9 @@ class Void implements Figure{
 
     @Override
     public void draw(Graphics graphics) {}
+
+    @Override
+    public double upperPlaneArea() {
+        return 0;
+    }
 }

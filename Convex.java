@@ -19,6 +19,10 @@ class Convex{
         return figure.perimeter();
     }
 
+    public double upperPlaneArea(){
+        return figure.upperPlaneArea();
+    }
+
     public void draw(Graphics graphics) {
         figure.draw(graphics);
     }

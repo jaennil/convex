@@ -33,4 +33,9 @@ class Segment implements Figure{
     public void draw(Graphics graphics) {
         graphics.drawLine((int)p.getX(), (int)p.getY(), (int)q.getX(), (int)q.getY());
     }
+
+    @Override
+    public double upperPlaneArea() {
+        return 0;
+    }
 }

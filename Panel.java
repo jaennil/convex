@@ -32,8 +32,9 @@ public class Panel extends JPanel implements Runnable {
     @Override
     public void run() {
         while (true) {
+            repaint();
             convex.add(new R2Point());
-            System.out.println("S = " + convex.area() + " P = " + convex.perimeter());
+            System.out.println("S = " + convex.area() + " P = " + convex.perimeter() + " площадь фигуры в верхней полуплоскости: " + convex.upperPlaneArea());
             repaint();
         }
     }
