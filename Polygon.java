@@ -77,7 +77,8 @@ class Polygon extends ArrayDeque<R2Point> implements Figure {
             i++;
         }
 
-        graphics.drawPolygon(xList, yList, this.size());
+//        graphics.drawPolygon(xList, yList, this.size());
+        graphics.fillPolygon(xList, yList, this.size());
     }
 
     @Override
