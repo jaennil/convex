@@ -1,8 +1,8 @@
 import javax.swing.*;
 
 public class Window extends JFrame {
-    private static final int WIDTH = 500;
-    private static final int HEIGHT = 500;
+    private static final int WIDTH = 800;
+    private static final int HEIGHT = 800;
 
     public Window() {
         setSize(WIDTH,HEIGHT);

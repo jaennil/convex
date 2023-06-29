@@ -20,10 +20,14 @@ public class Panel extends JPanel implements Runnable {
 
     @Override
     public void paintComponent(Graphics graphics) {
-        graphics.clearRect(0,0,WIDTH,HEIGHT);
+        Graphics2D graphics2D = (Graphics2D)graphics;
         graphics.translate(WIDTH/2, HEIGHT/2);
+        graphics2D.scale(1, -1);
+        graphics.clearRect(0,0,WIDTH,HEIGHT);
+        graphics.setColor(Color.RED);
         graphics.drawLine(0,0, 10000, 0);
         graphics.drawLine(0,0, 0, 10000);
+        graphics.setColor(Color.BLACK);
         graphics.drawLine(0,0, -10000, 0);
         graphics.drawLine(0,0, 0, -10000);
         convex.draw(graphics);

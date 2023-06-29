@@ -1,7 +1,6 @@
 import java.awt.*;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 
 class Polygon extends ArrayDeque<R2Point> implements Figure {
@@ -88,7 +87,7 @@ class Polygon extends ArrayDeque<R2Point> implements Figure {
         System.out.println(intersectionPoints);
         ArrayList<R2Point> areaPoints = new ArrayList<>();
         for (R2Point point : this) {
-            if (point.getY() <= 0) {
+            if (point.getY() > 0) {
                 areaPoints.add(point);
             }
         }
@@ -96,7 +95,7 @@ class Polygon extends ArrayDeque<R2Point> implements Figure {
         sortVerticesClockwise(areaPoints);
         System.out.println(areaPoints);
 
-        // формула гаусса
+        // формула площади гаусса
         double sum = 0;
         for (int i = 0; i < areaPoints.size() - 1; i++) {
             sum += areaPoints.get(i).getX() * areaPoints.get(i + 1).getY();
